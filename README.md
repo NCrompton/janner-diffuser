@@ -1,3 +1,17 @@
+# Run Docker 
+First generate a ssh key pair
+```
+ssh-keygen -f docker_rsa
+```
+Second run the docker compose file
+```
+docker compose up -d
+```
+Thirdly ssh to docker container
+```
+ssh root@localhost -p 1022 -i docker_rsa
+```
+
 # Planning with Diffusion &nbsp;&nbsp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1YajKhu-CUIGBJeQPehjVPJcK_b38a8Nc?usp=sharing)
 
 

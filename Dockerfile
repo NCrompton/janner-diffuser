@@ -26,6 +26,7 @@ RUN apt-get update -q \
     xpra \
     xserver-xorg-dev \
     zlib1g-dev \
+    openssh-server \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -55,15 +56,26 @@ RUN mkdir -p /root/.mujoco \
     && wget https://www.roboti.us/download/mujoco200_linux.zip -O mujoco.zip \
     && unzip mujoco.zip -d /root/.mujoco \
     && rm mujoco.zip
-RUN mkdir -p /root/.mujoco \
-    && wget https://www.roboti.us/download/mjpro150_linux.zip -O mujoco.zip \
-    && unzip mujoco.zip -d /root/.mujoco \
-    && rm mujoco.zip
+# RUN mkdir -p /root/.mujoco \
+#     && wget https://www.roboti.us/download/mjpro150_linux.zip -O mujoco.zip \
+#     && unzip mujoco.zip -d /root/.mujoco \
+#     && rm mujoco.zip
 RUN ln -s /root/.mujoco/mujoco200_linux /root/.mujoco/mujoco200
-ENV LD_LIBRARY_PATH /root/.mujoco/mjpro150/bin:${LD_LIBRARY_PATH}
+# ENV LD_LIBRARY_PATH /root/.mujoco/mjpro150/bin:${LD_LIBRARY_PATH}
 ENV LD_LIBRARY_PATH /root/.mujoco/mujoco200/bin:${LD_LIBRARY_PATH}
 ENV LD_LIBRARY_PATH /root/.mujoco/mujoco200_linux/bin:${LD_LIBRARY_PATH}
+RUN export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/.mujoco/mujoco200/bin
 COPY ./azure/files/mjkey.txt /root/.mujoco
+
+##########################################################
+### SSH setup
+##########################################################
+EXPOSE 22
+COPY ./docker_rsa.pub /home/docker_rsa.pub
+
+RUN mkdir ~/.ssh/
+RUN touch ~/.ssh/authorized_keys
+RUN cat /home/docker_rsa.pub >> ~/.ssh/authorized_keys
 
 ##########################################################
 ### Example Python Installation
@@ -96,3 +108,7 @@ RUN source ~/.bashrc
 
 RUN mkdir /home/code
 RUN mkdir /home/logs
+
+ENTRYPOINT service ssh start && bash
+# ENTRYPOINT ["tail"]
+# CMD ["-f","/dev/null"]

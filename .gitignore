@@ -142,3 +142,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#ssh-key
+docker_rsa
+docker_rsa.pub
