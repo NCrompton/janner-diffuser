@@ -78,6 +78,14 @@ RUN touch ~/.ssh/authorized_keys
 RUN cat /home/docker_rsa.pub >> ~/.ssh/authorized_keys
 
 ##########################################################
+### Nvidia Driver Installation (already installed by Docker image)
+##########################################################
+# RUN add-apt-repository ppa:graphics-drivers -y \
+#     && apt-get update \
+#     && apt upgrade -y \
+#     apt install nvidia-driver-560
+
+##########################################################
 ### Example Python Installation
 ##########################################################
 ENV PATH /opt/conda/bin:$PATH

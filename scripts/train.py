@@ -96,7 +96,7 @@ model = model_config()
 
 diffusion = diffusion_config(model)
 
-trainer = trainer_config(diffusion, dataset, renderer)
+trainer: utils.Trainer = trainer_config(diffusion, dataset, renderer)
 
 
 #-----------------------------------------------------------------------------#
